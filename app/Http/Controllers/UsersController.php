@@ -91,4 +91,14 @@ class UsersController extends Controller
         return redirect()->route('users.show', $user);
     }
 
+    // 以管理员权限删除用户
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('sussess','用户删除成功！');
+        return back();
+
+    }
+
 }
