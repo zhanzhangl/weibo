@@ -11,9 +11,9 @@ class UsersController extends Controller
 
     public function __construct()
     {
-        // 不许要 auth 身份认证的动作
+        // 不需要 auth 身份认证的动作
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store']
+            'except' => ['show', 'create', 'store',"index"]
         ]);
 
         // 只允许未登录用户访问注册页面
@@ -22,17 +22,24 @@ class UsersController extends Controller
         ]);
     }
 
-    // use App\Models\User;
+    // 列出所有用户
+    public function index()
+    {
+        $users = User::all();
+        return view('users.index', compact('users'));
+    }
+
+    // 返回注册页面
     public function create()
     {
         return view('users.create');
     }
-    //
+    // 返回用户个人页面
     public function show(User $user)
     {
         return view('users.show', compact('user'));
     }
-    //
+    // 新建用户会话
     public function store(Request $request)
     {
         // Step 1 数据过滤（注册）
@@ -55,12 +62,14 @@ class UsersController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
+    // 编辑用户个人信息
     public function edit(User $user)
     {
         $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
+    // 更新用户个人信息
     public function update(User $user, Request $request)
     {
         $this->authorize('update', $user);
