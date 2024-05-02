@@ -8,6 +8,20 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+
+    public function __construct()
+    {
+        // 不许要 auth 身份认证的动作
+        $this->middleware('auth', [
+            'except' => ['show', 'create', 'store']
+        ]);
+
+        // 只允许未登录用户访问注册页面
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+    }
+
     // use App\Models\User;
     public function create()
     {
@@ -43,11 +57,13 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
     public function update(User $user, Request $request)
     {
+        $this->authorize('update', $user);
         // 存在逻辑错误，密码会被随机更改，修改密码前需要鉴权！！！
         $this->validate($request, [
             'name' => 'required|max:50',
