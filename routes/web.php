@@ -38,3 +38,5 @@ Route::get('login', 'SessionsController@create')->name('login');
 Route::post('login', 'SessionsController@store')->name('login');
 // 销毁会话（退出应用）
 Route::delete('logout', 'SessionsController@destroy')->name('logout');
+// 确认激活令牌
+Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
