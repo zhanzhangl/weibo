@@ -16,7 +16,7 @@ class PasswordController extends Controller
     public function __construct()
     {
         // 对重置密码限流，一分钟内只能允许访问两次。
-        $this->middleware('throttle:2,1', [
+        $this->middleware('throttle:30,1', [
             'only' => ['showLinkRequestForm']
         ]);
         // 对发送密码重置邮件限流，10 分钟内只能尝试 3 次。
