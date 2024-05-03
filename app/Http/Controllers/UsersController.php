@@ -41,10 +41,19 @@ class UsersController extends Controller
         return view('users.create');
     }
     // 返回用户个人页面
+    // public function show(User $user)
+    // {
+    //     return view('users.show', compact('user'));
+    // }
+
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $statuses = $user->statuses()
+                           ->orderBy('created_at', 'desc')
+                           ->paginate(10);
+        return view('users.show', compact('user', 'statuses'));
     }
+
     // 新建用户会话
     public function store(Request $request)
     {

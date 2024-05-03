@@ -15,7 +15,7 @@ class SessionsController extends Controller
         ]);
 
         // 登录限流 规则是 10 分钟内只能尝试 10 次
-        $this->middleware('throttle:10,10', [
+        $this->middleware('throttle:100,10', [
             'only' => ['store']
         ]);
     }
