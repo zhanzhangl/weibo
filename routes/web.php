@@ -34,9 +34,17 @@ Route::get('/signup', 'UsersController@create')->name('signup');
 Route::resource('users', 'UsersController');
 // 获取登录页面
 Route::get('login', 'SessionsController@create')->name('login');
-// 创建新会话（登录应用）
+// 提交创建新会话（登录应用）
 Route::post('login', 'SessionsController@store')->name('login');
-// 销毁会话（退出应用）
+// 提交销毁会话（退出应用）
 Route::delete('logout', 'SessionsController@destroy')->name('logout');
-// 确认激活令牌
+// 获取激活令牌
 Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
+// 获取密码重置链接页面 （填写 Email 的表单）
+Route::get('password/reset',  'PasswordController@showLinkRequestForm')->name('password.request');
+// 提交密码重置链接页面 （处理提交的表单，成功的话就发送邮件，附带 Token 的链接）
+Route::post('password/email',  'PasswordController@sendResetLinkEmail')->name('password.email');
+// 获取密码重置令牌页面 （显示更新密码的表单，包含 token）
+Route::get('password/reset/{token}',  'PasswordController@showResetForm')->name('password.reset');
+// 提交密码重置令牌页面 （对提交过来的 token 和 email 数据进行配对，正确的话更新密码。）
+Route::post('password/reset',  'PasswordController@reset')->name('password.update');
